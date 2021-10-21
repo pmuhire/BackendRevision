@@ -25,9 +25,9 @@ const UserSchema=new mongoose.Schema({
 });
  function validateUser(user){
     const schema=Joi.object({
-        fullName:Joi.string().alphanum().min(5).max().required(),
+        fullName:Joi.string().min(5).max(255).required(),
         email:Joi.string().email({minDomainSegments:2,tlds:{allow:['net','com']}}).required(),
-        password:Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+        password:Joi.string().required(),
         category:Joi.string().min(3).required(),
         date:Joi.number().integer().min(1900).max(2018).required()
     });
