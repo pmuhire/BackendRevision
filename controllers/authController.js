@@ -1,6 +1,7 @@
 const express=require('express');
 const jwt=require('jsonwebtoken');
-const config=require('config');
+// const config=require('config');
+require('dotenv').config();
 const Joi=require('joi');
 const bcrypt=require('bcrypt');
 const {User}=require('../model/UserModel');
@@ -22,9 +23,9 @@ router.post('/',async (req,res)=>{
        email:user.email,
        password:user.password
     },
-    config.get('jwtPrivateKey')
+    process.env.jwtPrivateKey
     )
-    return res.send(token)
+    // return res.send(token)
    res.send(user);
 });
 function validate(req){

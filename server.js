@@ -1,7 +1,6 @@
 require('./model/db');
+require('dotenv').config();
 const express=require('express');
-// const cors=require('cors');
-// const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const registerUser=require('./controllers/registerUser');
 const authController=require('./controllers/authController');
@@ -15,6 +14,6 @@ app.use('/user',registerUser);
 app.use('/user/login',authController);
 
 const http=require('http').createServer(app);
-http.listen(3000,()=>{
+http.listen(process.env.PORT,()=>{
     console.log('server up and running');
 })
