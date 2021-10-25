@@ -1,6 +1,5 @@
 const express=require('express');
 const jwt=require('jsonwebtoken');
-// const config=require('config');
 require('dotenv').config();
 const Joi=require('joi');
 const bcrypt=require('bcrypt');
@@ -9,24 +8,28 @@ const {User}=require('../model/UserModel');
 const router=express.Router();
 
 router.post('/',async (req,res)=>{
+    // console.log(req.body)
     const {error} = validate(req.body)
     if(error) return res.send(error.details[0].message).status(400)
 
-   const user=await User.findOne({email:req.body.email});
-   if(!user) return res.send("Invalid email or password").status(400);
+    await User.findOne({email:req.body.email}).then( async user=>{
+    if(!user) return res.send("Invalid email or password").status(400);
 
-   const validPassword=await bcrypt.compare(req.body.password,user.password);
-   if(!validPassword) return res.send("Invalid email or password").status(400);
-   const token=jwt.sign(
-    {
-       _id:user._id,
-       email:user.email,
-       password:user.password
-    },
-    process.env.jwtPrivateKey
-    )
-    // return res.send(token)
-   res.send(user);
+    await bcrypt.compare(req.body.password,user.password).then(validPassword=>{
+        if(!validPassword) return res.send("Invalid email or password").status(400);
+    });
+    const token=jwt.sign(
+        {
+             _id:user._id,
+            email:user.email,
+            password:user.password
+        },
+        process.env.jwtPrivateKey
+        )
+        return res.send(token)
+ })
+
+// res.send(user);
 });
 function validate(req){
     const schema = Joi.object({

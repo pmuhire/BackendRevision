@@ -10,8 +10,8 @@ const app=express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use('/user',registerUser);
 app.use('/user/login',authController);
+app.use('/user',registerUser);
 
 const http=require('http').createServer(app);
 http.listen(process.env.PORT,()=>{

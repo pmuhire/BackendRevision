@@ -7,6 +7,7 @@ router.get('/',async(req,res)=>{
     const users=await User.find().sort({name:1});
     return res.send(users);
 });
+// MUST HAVE AN AUTH TOKEN
 router.get('/:id',async (req,res)=>{
     const users= await User.findOne({id:req.params.id});
     res.send(users);
@@ -23,7 +24,7 @@ router.post('/',async (req,res)=>{
    
     let user=await User.findOne({email:email})
     if(user) return res.send('User already exist').status(400);
-    hashPassword(req.body.password).then(async response => {
+    hashPassword(password).then(async response => {
         user=new User({
             fullName:fullName,
             email:email,
@@ -36,6 +37,7 @@ router.post('/',async (req,res)=>{
         });
     });
 });
+// MUST HAVE AN AUTH TOKEN
 router.put('/:id',async (req,res)=>{
     try{
         const updatedUser= await User.findOneAndUpdate({_id:req.params.id},req.body,{new:true})
@@ -44,6 +46,7 @@ router.put('/:id',async (req,res)=>{
         res.send(err).status(404);
     }
 })
+// MUST HAVE AN AUTH TOKEN
 router.delete('/:id',async (req,res)=>{
     try{
         const deletedUser= await User.findOneAndDelete({_id:req.params.id},req.body,{new:true})
