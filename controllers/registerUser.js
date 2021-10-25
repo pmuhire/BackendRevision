@@ -23,7 +23,7 @@ router.post('/',async (req,res)=>{
     const date=req.body.date;
    
     let user=await User.findOne({email:email})
-    if(user) return res.send('User already exist').status(400);
+    if(user) return res.status(400).send('User already exist');
     hashPassword(password).then(async response => {
         user=new User({
             fullName:fullName,
