@@ -13,10 +13,11 @@ router.get('/:id',async (req,res)=>{
     res.send(users);
 });
 router.post('/',async (req,res)=>{
+    console.log(req.body)
     const {err}=validate(req.body);
     if(err) return res.send(err.details[0].message).status(400);
 
-    const fullName=req.body.fullName;
+    const fullName=req.body.full_name;
     const email=req.body.email;
     const category=req.body.category;
     const password=req.body.password;
