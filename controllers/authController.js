@@ -26,8 +26,9 @@ router.post('/',async (req,res)=>{
         },
         process.env.jwtPrivateKey
         )
+        console.log(token)
         return res.send(token)
- })
+    })
 
 // res.send(user);
 });

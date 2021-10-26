@@ -13,18 +13,21 @@ router.get('/:id',async (req,res)=>{
     res.send(users);
 });
 router.post('/',async (req,res)=>{
-    console.log(req.body)
     const {err}=validate(req.body);
-    if(err) return res.send(err.details[0].message).status(400);
-
+    if(err){
+        return res.send(err.details[0].message).status(400);
+    } 
     const fullName=req.body.full_name;
     const email=req.body.email;
     const category=req.body.category;
     const password=req.body.password;
     const date=req.body.date;
    
-    let user=await User.findOne({email:email})
-    if(user) return res.status(400).send('User already exist');
+    await User.findOne({email:email}).then(user=>{
+        if(user===true) {
+            return res.send('User already exist').status(400);
+        };
+    })
     hashPassword(password).then(async response => {
         user=new User({
             fullName:fullName,
@@ -34,7 +37,10 @@ router.post('/',async (req,res)=>{
             date:date
         });
         await user.save().then(response => {
-            return res.send(response).status(201);
+            console.log(response);
+            // return res.send(response).status(201);
+        }).catch(err=>{
+            console.log(err)
         });
     });
 });
