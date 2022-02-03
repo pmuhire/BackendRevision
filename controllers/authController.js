@@ -8,7 +8,6 @@ const {User}=require('../model/UserModel');
 const router=express.Router();
 
 router.post('/',async (req,res)=>{
-    // console.log(req.body)
     const {error} = validate(req.body)
     if(error) return res.send(error.details[0].message).status(400)
 
@@ -26,11 +25,13 @@ router.post('/',async (req,res)=>{
         },
         process.env.jwtPrivateKey
         )
+        res.status(200).send({
+           authToken:token
+        })
         console.log(token)
-        return res.send(token)
     })
-
-// res.send(user);
+    
+    
 });
 function validate(req){
     const schema = Joi.object({

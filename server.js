@@ -5,6 +5,7 @@ const express=require('express');
 const bodyParser=require('body-parser');
 const registerUser=require('./controllers/registerUser');
 const authController=require('./controllers/authController');
+const logger = require('./utils/logger');
 
 const app=express();
 
@@ -18,5 +19,5 @@ app.use('/user/register',registerUser);
 
 const http=require('http').createServer(app);
 http.listen(process.env.PORT,()=>{
-    console.log('server up and running');
+    logger.error('server up and running',process.env.PORT);
 })
